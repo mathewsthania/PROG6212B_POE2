@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PROG_POE2</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PROG_POE2.styles.css" asp-append-version="true" />
+    <style>
+        /* adding in navigation bar design */
+        .navbar-nav .nav-item {
+            position: relative;
+            padding: 0 15px;
+        }
+            /* adding in line spaces between each navigation item - for a simple design*/
+            .navbar-nav .nav-item:not(:last-child)::after {
+                content: "|";
+                position: absolute;
+                right: -10px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: lightgray;
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            /* adding in design - font and colour for the navigation items*/
+            .navbar-nav .nav-item .nav-link {
+                font-family: 'Century Gothic', sans-serif;
+                font-size: 16px;
+                font-weight: bold;
+                color: lightgray;
+                padding: 15px;
+                text-decoration: none;
+            }
+
+            /* adding in hover design - changes to orange when the user hovers over each navigation item*/
+                .navbar-nav .nav-item .nav-link:hover {
+                    color: darkorange !important;
+                    background-color: white !important;
+                    text-decoration: none;
+                }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"> <!-- changing colour of navigation bar-->
+            <div class="container-fluid">
+
+                <!--adding in logo image to make the website look more professional-->
+                <img src="/css/Contract_Monthly_Claim_SystemLogo.jpg" alt="CONTRACT MONTHLY CLAIM SYSTEM" width="350" height="60" style="margin-left: 10px;" />
+
+                <a class="nav-link text-light nav bar-brand" asp-area="" asp-controller="Home" asp-action="Index"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>  
+                </button>
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="SubmitClaim">Submit Claim </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ApproveClaim">Review Claim</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Claims">Claims</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - Contract Monthly Claim System, South Africa - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
