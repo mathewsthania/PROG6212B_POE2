@@ -10,6 +10,19 @@
 
     <!-- form to submit a claim -->
     <form>
+
+         <!-- creating input for lectures first name-->
+        <div class="form-group">
+            <label for="lecturesFirstName">Name</label>
+            <input type="text" class="form-control" id="FirstName" placeholder="Enter First Name"/>
+        </div>
+
+        <!-- creating input for lectures surname-->
+        <div class="form-group">
+            <label for="lecturesSurname">Surname</label>
+            <input type="text" class="form-control" id="Surname" placeholder="Enter Surname"/>
+        </div>
+
         <!-- creating input for hours worked-->
         <div class="form-group">
             <label for="HoursWorked">Hours Worked</label>
@@ -24,13 +37,13 @@
 
         <!-- creating input for month by allowing the user to enter a date period to claim from-->
         <div class="form-group">
-            <label for="ClaimStartDate"> Claim Period - From</label>
-            <input type="date" class="form-control" id="ClaimStartDate"/>
+            <label for="ClaimStartDate"> Select a Claim Period - From</label>
+            <input type="date" class="form-control" id="ClaimStartDate" placeholder="yyyy/mm/dd" />
         </div>
 
         <div class="form-group">
-            <label for="ClaimEndDate"> Claim Period - To</label>
-            <input type="date" class="form-control" id="ClaimEndDate" />
+            <label for="ClaimEndDate"> Select a Claim Period - To</label>
+            <input type="date" class="form-control" id="ClaimEndDate" placeholder="yyyy/mm/dd" />
         </div>
 
         <div class="form-group">
@@ -53,15 +66,9 @@
         padding: 20px;
         border: 1px solid #ddd;
         border-radius: 8px;
-        background-color: black;
-        text-align: center;
-    }
-
-
-    .customer-profilePic{
-        width: 450px;
-        height: 300px;
-        margin-bottom: 20px;
+        font-weight: bold;
+        background-color: lightgray;
+        text-align: left;
     }
 
     /* form control design and text design */
@@ -75,7 +82,7 @@
     /* adding in design for the add profile button  */
     .submit-btn{
         width: 100%;
-        background-color: lightgrey;
+        background-color: white;
         color: darkorange; /*text colour*/
         border: 2px solid darkorange;
         padding: 10px;
@@ -90,24 +97,6 @@
         background-color: darkorange;
         border-color:white;
         color: white; /* text colour */
-    }
-
-    .alert {
-        margin: 20px auto;
-        width: 90%;
-        max-width: 600px;
-        padding: 15px;
-        border-radius: 5px;
-    }
-
-    .alert-success {
-        background-color: #d4edda;
-        color: #155724;
-    }
-
-    .alert-danger {
-        background-color: #f8d7da;
-        color: #721c24;
     }
 
 </style>

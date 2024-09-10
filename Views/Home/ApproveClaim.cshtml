@@ -1,5 +1,185 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*START*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
+
 @{
+	ViewData["Title"] = "Approve or Reject Claims";
 }
+
+
+<!--ADDING IN CANVA DESIGN I CREATED FOR THE HEADINGS-->
+<img src="~/css/ReviewClaims1.png" alt="ReviewClaimImage" style="width: 100%; height: auto;">
+
+<div class="reviewClaims-container">
+	<!--creating table to display the list of claims-->
+	<table class="claims-table">
+		<thead>
+			<tr>
+				<th>Claim ID</th>
+				<th>Lecturer First Name</th>
+				<th>Lecturer Last Name</th>
+				<th>Hours Worked</th>
+				<th>Hourly Rate</th>
+				<th>Claim Period (From)</th>
+				<th>Claim Period (To)</th>
+				<th>Total Amount</th>
+				<th>Supporting Documents</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!--inputting dummy data -->
+			<tr>
+				<td>001</td>
+				<td>Thania</td>
+				<td>Mathews</td>
+				<td>40</td>
+				<td>$25</td>
+				<td>2023-04-01</td>
+				<td>2023-04-31</td>
+				<td>$1000</td>
+				<td><a href="#">Download</a></td>
+				<td>
+					<button class="button-approve">Approve</button>
+					<button class="button-reject">Reject</button>
+				</td>
+			</tr>
+			<tr>
+				<td>002</td>
+				<td>Chloe</td>
+				<td>Hudson</td>
+				<td>60</td>
+				<td>$20</td>
+				<td>2023-05-01</td>
+				<td>2023-05-30</td>
+				<td>$1200</td>
+				<td><a href="#">Download</a></td>
+				<td>
+					<button class="button-approve">Approve</button>
+					<button class="button-reject">Reject</button>
+				</td>
+			</tr>
+			<tr>
+				<td>003</td>
+				<td>John</td>
+				<td>King</td>
+				<td>35</td>
+				<td>$25</td>
+				<td>2023-06-01</td>
+				<td>2023-06-30</td>
+				<td>$875</td>
+				<td><a href="#">Download</a></td>
+				<td>
+					<button class="button-approve">Approve</button>
+					<button class="button-reject">Reject</button>
+				</td>
+			</tr>
+			<tr>
+				<td>004</td>
+				<td>Mark</td>
+				<td>Ford</td>
+				<td>10</td>
+				<td>$30</td>
+				<td>2023-07-01</td>
+				<td>2023-07-31</td>
+				<td>$300</td>
+				<td><a href="#">Download</a></td>
+				<td>
+					<button class="button-approve">Approve</button>
+					<button class="button-reject">Reject</button>
+				</td>
+			</tr>
+			<tr>
+				<td>005</td>
+				<td>Gina</td>
+				<td>Wit</td>
+				<td>50</td>
+				<td>$25</td>
+				<td>2023-08-01</td>
+				<td>2023-08-31</td>
+				<td>$1250</td>
+				<td><a href="#">Download</a></td>
+				<td>
+					<button class="button-approve">Approve</button>
+					<button class="button-reject">Reject</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+	<!---adding in design --->
+
+	<style>
+		.reviewClaims-container{
+		max-width: 1000px;
+		margin: 50px auto;
+		padding: 20px;
+		border: 1px solid #ddd;
+		border-radius: 8px;
+		background-color: lightgrey;
+		font-family: 'Century Gothic', sans-serif;
+		}
+
+		.claims-table{
+			width: 100%;
+			border-collapse:collapse;
+		}
+
+		.claims-table th, .claims-table td {
+			padding: 10px;
+			border: 1px solid #ddd;
+			text-align: center;
+			font-family: 'Century Gothic', sans-serif;
+		}
+
+		.claims-table th{
+			background-color: #333;
+			color: #fff;
+		}
+
+		.button-approve, .button-reject {
+			display: inline-block;
+			width: 120px;
+			padding: 10px 15px;
+			border: none;
+			cursor: pointer;
+			text-align: center;
+			font-size: 14px;
+			border-radius: 5px;
+		}
+
+
+		.button-approve {
+			background-color: greenyellow;
+			color: black;
+			border: none;
+			font-weight: bold;
+			font-family: 'Century Gothic', sans-serif;
+			padding: 5px 10px;
+			cursor: pointer;
+		}
+
+		.button-reject {
+			background-color: tomato;
+			color: white;
+			border: none;
+			font-weight: bold;
+			font-family: 'Century Gothic', sans-serif;
+			padding: 5px 10px;
+			cursor: pointer;
+		}
+
+		/*colour added when user hovers over approve button*/
+		.button-approve:hover {
+			background-color: green;
+			color: white;
+		}	
+
+	
+		/*colour added when user hovers over reject button*/
+		.button-reject:hover {
+			background-color: red;
+			color: white;
+		}
+	</style>
+
+<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*END*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
