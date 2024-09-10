@@ -23,19 +23,19 @@
                 <td>001</td>
                 <td>Thania</td>
                 <td>Mathews</td>
-                <td>Pending</td>
+                <td class ="status-pending">Pending</td> <!--adding in classes so that i can colour code the status-->
             </tr>
             <tr>
                 <td>008</td>
                 <td>Thania</td>
                 <td>Mathews</td>
-                <td>Rejected</td>
+                <td class="status-rejected">Rejected</td>
             </tr>
             <tr>
                 <td>009</td>
                 <td>Thania</td>
                 <td>Mathews</td>
-                <td>Approved</td>
+                <td class="status-approved">Approved</td>
             </tr>
         </tbody>
     </table>
@@ -65,5 +65,17 @@
         background-color: #f4f4f4;
     }
 
+    /*adding in the css style for the different statuses*/
+    .status-pending {
+        background-color: dimgrey;
+    }
+
+    .status-approved {
+        background-color: greenyellow;
+    }
+
+    .status-rejected {
+        background-color:red;
+    }
 </style>
 <!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*END*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
