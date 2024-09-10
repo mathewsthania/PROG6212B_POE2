@@ -1,5 +1,69 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*START*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
+
 @{
+    ViewData["Title"] = "Claim Status";
 }
+
+<!--ADDING IN CANVA DESIGN I CREATED FOR THE HEADINGS-->
+<img src="~/css/ClaimStatus.png" alt="ClaimStatusImage" style="width: 100%; height: auto;">
+
+<div class="claimStatus-container">
+    <table class="claimStatus-table">
+        <thead>
+            <tr>
+                <th>Claim ID</th>
+                <th>Lecture First Name</th>
+                <th>Lecture Last Name</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--inputting dummy data-->
+            <tr>
+                <td>001</td>
+                <td>Thania</td>
+                <td>Mathews</td>
+                <td>Pending</td>
+            </tr>
+            <tr>
+                <td>008</td>
+                <td>Thania</td>
+                <td>Mathews</td>
+                <td>Rejected</td>
+            </tr>
+            <tr>
+                <td>009</td>
+                <td>Thania</td>
+                <td>Mathews</td>
+                <td>Approved</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .claimStatus-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color:lightgrey;
+    }
+
+    .claimStatus-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .claimStatus-table th, .claimStatus-table td{
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    .claimStatus-table th{
+        background-color: #f4f4f4;
+    }
+
+</style>
+<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*END*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
