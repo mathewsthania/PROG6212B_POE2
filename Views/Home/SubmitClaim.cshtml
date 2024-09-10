@@ -1,6 +1,116 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
+﻿<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*START*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
+@{
+    ViewData["Title"] = "Submit a Claim";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<!--ADDING IN CANVA DESIGN I CREATED FOR THE HEADINGS-->
+<img src="~/css/SubmitClaim.png" alt="SubmitClaimImage" style="width: 100%; height: auto;">
+
+<div class="submitClaim-container">
+
+    <!-- form to submit a claim -->
+    <form>
+        <!-- creating input for hours worked-->
+        <div class="form-group">
+            <label for="HoursWorked">Hours Worked</label>
+            <input type="number" class="form-control" id="HoursWorked" placeholder="Enter Hours Worked"/>
+        </div>
+
+        <!-- creating input for hourly rate-->
+        <div class="form-group">
+            <label for="HourlyRate">Hourly Rate</label>
+            <input type="number" class="form-control" id="HourlyRate" placeholder="Enter your Hourly Rate"/>
+        </div>
+
+        <!-- creating input for month by allowing the user to enter a date period to claim from-->
+        <div class="form-group">
+            <label for="ClaimStartDate"> Claim Period - From</label>
+            <input type="date" class="form-control" id="ClaimStartDate"/>
+        </div>
+
+        <div class="form-group">
+            <label for="ClaimEndDate"> Claim Period - To</label>
+            <input type="date" class="form-control" id="ClaimEndDate" />
+        </div>
+
+        <div class="form-group">
+            <label for="SupportingDocument">Upload Supporting Documents</label>
+            <input type="file" class="form-control-file" id="SupportingDocument"/>
+        </div>
+
+        <!--creating a button to submit the claim-->
+        <button type="submit" class="submit-btn" disabled>Submit Claim</button>
+    </form>
+
+</div>
+
+<style>
+
+    /* adding in container design */
+    .submitClaim-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: black;
+        text-align: center;
+    }
+
+
+    .customer-profilePic{
+        width: 450px;
+        height: 300px;
+        margin-bottom: 20px;
+    }
+
+    /* form control design and text design */
+    .form-control{
+        width: 100%;
+        color: white;
+        margin-bottom: 20px;
+        font-family: 'Century Gothic', sans-serif;
+    }
+
+    /* adding in design for the add profile button  */
+    .submit-btn{
+        width: 100%;
+        background-color: lightgrey;
+        color: darkorange; /*text colour*/
+        border: 2px solid darkorange;
+        padding: 10px;
+        font-family: 'Century Gothic', sans-serif;
+        font-weight: bold;
+        font-size: 16px;
+        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    /* adding in hover effects for the add profile button*/
+    .submit-btn:hover{
+        background-color: darkorange;
+        border-color:white;
+        color: white; /* text colour */
+    }
+
+    .alert {
+        margin: 20px auto;
+        width: 90%;
+        max-width: 600px;
+        padding: 15px;
+        border-radius: 5px;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+</style>
+
+
+<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*END*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
