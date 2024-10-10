@@ -1,0 +1,64 @@
+﻿
+<!-- creating form-->
+<div class="signup-container">
+
+	<img src="~/css/LOGIN.IMAGE.jpg" alt="ContractMonthlyClaimLogo" class="signup-logo" />
+
+	<form action="/UserController1/SignUp" method="post">
+		<!--This is connected to the http post in the usercontroller-->
+
+		<p>
+			<strong>
+				Sign up now!
+			</strong>
+		</p
+
+		
+		<select name="UserRole" class="form-control" required>
+			<option value="Lecturer">Lecturer</option>
+			<option value="Programme Coordinator/Academic Manager">Programme Coordinator/Academic Manager</option>
+		</select>
+
+		<input type="text" name="Name" class="form-control" placeholder="Name" required>
+		<input type="text" name="Surname" class="form-control" placeholder="Surname" required>
+		<input type="text" name="Email" class="form-control" placeholder="Example@gmail.com" required>
+		<input type="password" name="Password" class="form-control" placeholder="Password" required>
+
+		<button type="signup" class="signup-btn"> Sign Up </button>
+	</form>
+</div>
+
+<style>
+	.signup-container
+	{
+		max-width: 500px;
+		margin: 50px auto;
+		padding: 20px;
+		border: 1px solid #ddd;
+		border-radius: 8px;
+		background-color: orange;
+		text-align: center;
+	}
+
+	.signup-logo
+	{
+		width: 450px;
+		height: 300px;
+		margin-bottom: 20px;
+	}
+
+	.form-control
+	{
+		width: 100%;
+		margin-bottom: 20px;
+	}
+
+	.signup-btn
+	{
+		width: 100%;
+		background-color: #ffc107;
+		color:white;
+		border: none;
+		padding: 10px;
+	}
+</style>

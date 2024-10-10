@@ -1,0 +1,62 @@
+﻿<!-- creating form-->
+<div class="login-container">
+
+	<img src="~/css/LOGIN.IMAGE.jpg" alt="ContractMonthlyClaimImage" class="login-logo" />
+
+	<form asp-controller="Login" asp-action="UserLogin" method="post">
+		<!--This is connected to the http post in the logincontroller--><p>
+
+		<p>
+			<strong>
+				Log in to Khumalo Craft Emporium!
+			</strong>
+		</p>
+
+		<!-- Allowing the user to login with their previously created email and password-->
+		<input type="text" name="Name" class="form-control" placeholder="Name" required>
+		<input type="text" name="Email" class="form-control" placeholder="Example@gmail.com" required>
+		<input type="password" name="Password" class="form-control" placeholder="Password" required>
+
+		<button type="login" class="login-btn"> Log in </button>
+	</form>
+</div>
+
+@if (ViewBag.ErrorMessage != null)
+{
+	<div class="alert alert-danger">
+
+		@ViewBag.ErrorMessage
+	</div>
+}
+
+<style>
+	.login-container {
+		max-width: 500px;
+		margin: 50px auto;
+		padding: 20px;
+		border: 1px solid #ddd;
+		border-radius: 8px;
+		background-color: #f9f9f9;
+		text-align: center;
+	}
+
+	.login-logo {
+		width: 450px;
+		height: 300px;
+		margin-bottom: 20px;
+	}
+
+	.form-control {
+		width: 100%;
+		margin-bottom: 20px;
+	}
+
+	.login-btn {
+		width: 100%;
+		background-color: #ffc107;
+		color: white;
+		border: none;
+		padding: 10px;
+	}
+</style>
+
