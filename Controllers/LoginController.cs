@@ -5,6 +5,7 @@ using PROG_POE2.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*START*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 
@@ -12,8 +13,9 @@ namespace PROG_POE2.Controllers
 {
 	public class LoginController : Controller
 	{
-		// creating an instance of the UserTable class, to access data - database
-		public UserTable1 usrtbl = new UserTable1();
+		// creating an instance of the Lecturer and ProgAcademic class, to access data - database
+		public LecturerTable lectTbl = new LecturerTable();
+		public ProgrammeCoordinatorAcademicManagerTable progAcdmTbl = new ProgrammeCoordinatorAcademicManagerTable();
 
 		// Action method - handling the default index view
 		public IActionResult Index()
@@ -32,32 +34,46 @@ namespace PROG_POE2.Controllers
 
 		// Action method for handling POST requests for user privacy
 		[HttpPost]
-		public async Task<IActionResult> UserLogin(UserTable1 model)
+		public async Task<IActionResult> UserLogin(string name, string email, string password)
 		{
-
-			if (ModelState.IsValid)
+			if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
 			{
-				return View("Login", model); ;
+				ViewBag.ErrorMessage = "Please fill in all the fields!";
+				return View("Login");
 			}
 
-			// creating a new instance of the LoginModel
-			var loginModel = new LoginModel();
+			int lecturerUserID = login.SelectLecturer(name, email, password);
 
-			// using the object created(loginModel) to call the SelectUser method to find the user by Name,Email & Password
-			int UserID = login.SelectUser(model.Name, model.Email, model.Password);
+			int programmeCoordAcadManagerUserID = login.SelectProgrammeCoordinatorAcademicManager(name, email, password);
 
-			// checking if the UserID is valid (if its not equal to -1)
-			if (UserID != -1)
-
+			if (lecturerUserID != -1)
 			{
-				// User found, proceed with login logic (e.g., set authentication cookie)
-				// Redirects to MyWorkPage(HomeController) - now with the UsersID
-
 				var claims = new List<Claim>
 				{
-					new Claim(ClaimTypes.Name, model.Name),
-					new Claim(ClaimTypes.Email, model.Email),
-					new Claim(ClaimTypes.NameIdentifier, UserID.ToString())
+					new Claim(ClaimTypes.Name, name),
+					new Claim(ClaimTypes.Email, email),
+					new Claim(ClaimTypes.NameIdentifier, lecturerUserID.ToString())
+				};
+
+
+				var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+				var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+				await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+
+				HttpContext.Session.SetString("UserName", name);
+
+				return RedirectToAction("SubmitClaim", "Home", new { UserID = lecturerUserID });
+			}
+
+			else if (programmeCoordAcadManagerUserID != -1)
+			{
+				var claims = new List<Claim>
+				{
+					new Claim(ClaimTypes.Name, name),
+					new Claim(ClaimTypes.Email, email),
+					new Claim(ClaimTypes.NameIdentifier, programmeCoordAcadManagerUserID.ToString())
 				};
 
 				var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -66,9 +82,9 @@ namespace PROG_POE2.Controllers
 
 				await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
-				HttpContext.Session.SetString("UserName", model.Name);
+				HttpContext.Session.SetString("UserName", name);
 
-				return RedirectToAction("MyWorkPageShopping", "Home", new { UserID = UserID });
+				return RedirectToAction("ApproveClaim", "Home", new { UserID = programmeCoordAcadManagerUserID });
 			}
 
 			else
@@ -76,7 +92,7 @@ namespace PROG_POE2.Controllers
 				ViewBag.ErrorMessage = "Email or Password entered is incorrect, Please try again!";
 				// User not found, handle accordingly (e.g., show error message)
 
-				return View("Login", model);
+				return View("Login");
 			}
 		}
 
