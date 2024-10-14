@@ -1,10 +1,11 @@
-﻿
+﻿<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*START*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
+
 <!-- creating form-->
 <div class="signup-container">
 
 	<img src="~/css/LOGIN.IMAGE.jpg" alt="ContractMonthlyClaimLogo" class="signup-logo" />
 
-	<form action="/UserController/SignUp" method="post">
+	<form asp-controller="User" asp-action="SignUp" method="post">
 		<!--This is connected to the http post in the usercontroller-->
 
 		<p>
@@ -13,7 +14,7 @@
 			</strong>
 		</p>
 
-		<select name="UserRole" class="form-control" required>
+		<select name="role" class="form-control" required>
 			<option value="" disabled selected hidden>>>>Select a role>>></option>
 			<option value="Lecturer">Lecturer</option>
 			<option value="Programme Coordinator/Academic Manager">Programme Coordinator/Academic Manager</option>
@@ -74,3 +75,5 @@
 		color: white; /* text colour */
 	}
 </style>
+
+<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*END*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->

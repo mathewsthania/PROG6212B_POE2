@@ -8,14 +8,37 @@ namespace PROG_POE2.Controllers
 	public class UserController : Controller
 	{
 		// instantiate UserTable object to interact with the database
-		public UserTable1 usrtbl = new UserTable1();
+		public LecturerTable lectTbl = new LecturerTable();
+		public ProgrammeCoordinatorAcademicManagerTable progAcdmTbl = new ProgrammeCoordinatorAcademicManagerTable();
 
 		// Action method to handle SignUp POST request
 		[HttpPost]
-		public ActionResult SignUp(UserTable1 Users)
+		public ActionResult SignUp(string role, string name, string surname, string email, string password)
 		{
-			// call insert_User method of UserTable to insert user data into the database
-			var result = usrtbl.insert_User(Users);
+			if (role == "Lecturer")
+			{
+				var lecturer = new LecturerTable
+				{
+					Name = name,
+					Surname = surname,
+					Email = email,
+					Password = password
+				};
+
+				var result = lectTbl.insert_Lecturer(lecturer);
+			}
+			else if (role == "Programme Coordinator/Academic Manager")
+			{
+				var programcoordinatoracademicmanager = new ProgrammeCoordinatorAcademicManagerTable
+				{
+					Name = name,
+					Surname = surname,
+					Email = email,
+					Password = password
+				};
+
+				var result = progAcdmTbl.insert_ProgrammeCoordinatorAcademicManager(programcoordinatoracademicmanager);
+			}
 
 			// redirecting to Home/Index action after a successful SignUp
 			return RedirectToAction("Login", "Home");
@@ -26,7 +49,7 @@ namespace PROG_POE2.Controllers
 		public ActionResult SignUp()
 		{
 			// return the SignUp view with the UserTable object
-			return View(usrtbl);
+			return View();
 		}
 	}
 }

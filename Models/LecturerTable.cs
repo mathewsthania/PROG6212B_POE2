@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace PROG_POE2.Models
 {
-	public class UserTable1 
+	public class LecturerTable
 	{
 		// Connection string for connecting to the SQL database
 		public static string con_string = "Server=tcp:sql-databaset-utorial.database.windows.net,1433;Initial Catalog=MyCloudDatabase;Persist Security Info=False;User ID=thaniamathews;Password=SummerMe26;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
@@ -25,9 +25,9 @@ namespace PROG_POE2.Models
 
 
 		// Method for inserting user data into the database
-		public int insert_User(UserTable1 model)
+		public int insert_Lecturer(LecturerTable model)
 		{
-			string sql = "INSERT INTO UserTable1 (UserName, UserSurname, UserEmail, UserPassword) VALUES (@Name, @Surname, @Email, @Password)";
+			string sql = "INSERT INTO LecturerTable (UserName, UserSurname, UserEmail, UserPassword) VALUES (@Name, @Surname, @Email, @Password)";
 
 			// create SQLCommand object with SQL query and SQLConnection
 			using SqlCommand cmd = new SqlCommand(sql, con);
