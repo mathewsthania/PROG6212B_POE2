@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PROG_POE2.Models
 {
-    public class Claim
+    public class ClaimModel
     {
         public int ClaimID { get; set; }
 

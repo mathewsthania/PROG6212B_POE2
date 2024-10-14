@@ -4,17 +4,17 @@
 
 	<img src="~/css/LOGIN.IMAGE.jpg" alt="ContractMonthlyClaimLogo" class="signup-logo" />
 
-	<form action="/UserController1/SignUp" method="post">
+	<form action="/UserController/SignUp" method="post">
 		<!--This is connected to the http post in the usercontroller-->
 
 		<p>
 			<strong>
 				Sign up now!
 			</strong>
-		</p
+		</p>
 
-		
 		<select name="UserRole" class="form-control" required>
+			<option value="" disabled selected hidden>>>>Select a role>>></option>
 			<option value="Lecturer">Lecturer</option>
 			<option value="Programme Coordinator/Academic Manager">Programme Coordinator/Academic Manager</option>
 		</select>
@@ -36,14 +36,17 @@
 		padding: 20px;
 		border: 1px solid #ddd;
 		border-radius: 8px;
-		background-color: orange;
+		background-color: lightgrey;
 		text-align: center;
+		font-family: 'Century Gothic', sans-serif;
+        font-weight: bold;
+		color: white;
 	}
 
 	.signup-logo
 	{
 		width: 450px;
-		height: 300px;
+		height: 350px;
 		margin-bottom: 20px;
 	}
 
@@ -56,9 +59,18 @@
 	.signup-btn
 	{
 		width: 100%;
-		background-color: #ffc107;
-		color:white;
+		background-color: white;
+		font-family: 'Century Gothic', sans-serif;
+        font-weight: bold;
+		color:dimgray;
 		border: none;
 		padding: 10px;
+	}
+
+	/* adding in hover effects for the signup button*/
+		.signup-btn:hover {
+		background-color: darkorange;
+		border-color: white;
+		color: white; /* text colour */
 	}
 </style>

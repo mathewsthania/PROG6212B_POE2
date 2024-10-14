@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 namespace PROG_POE2
 {
     public class Program
@@ -9,7 +11,23 @@ namespace PROG_POE2
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            var app = builder.Build();
+			builder.Services.AddSession(options =>
+			{
+				options.Cookie.IsEssential = true;
+				options.IdleTimeout = TimeSpan.FromMinutes(30);
+			});
+
+			builder.Services.AddHttpContextAccessor();
+
+			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+			.AddCookie(options =>
+			{
+				options.LoginPath = "/Account/Login";
+				options.LogoutPath = "/Account/Logout";
+				options.AccessDeniedPath = "/Account/AccessDenied";
+			});
+
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -24,6 +42,9 @@ namespace PROG_POE2
 
             app.UseRouting();
 
+            app.UseSession();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

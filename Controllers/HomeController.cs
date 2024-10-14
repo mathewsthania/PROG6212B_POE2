@@ -28,7 +28,7 @@ namespace PROG_POE2.Controllers
 			return View();
 		}
 
-        public IActionResult Claims()
+        public IActionResult Claims1()
         {
             return View();
         }
@@ -43,7 +43,14 @@ namespace PROG_POE2.Controllers
             return View();
         }
 
+        public IActionResult Logout()
+        {
+            return View("Index");
+        }
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
