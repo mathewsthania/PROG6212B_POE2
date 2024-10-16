@@ -24,7 +24,7 @@
 					<th>Claim Period (To)</th>
 					<th>Total Amount</th>
 					<th>Supporting Documents</th>
-					<th>Additonal Notes</th>
+					<th>Additional Notes</th>
 					<th>Action</th>
 				</tr>
 			</thead>
@@ -35,16 +35,23 @@
 					<tr>
 						<td> @claim.ClaimID</td>
 						<td> @claim.LecturerFirstName</td>
-						<td> @claim.LectureLastName</td>
+						<td> @claim.LecturerLastName</td>
 						<td> @claim.HoursWorked</td>
 						<td> @claim.HourlyRate.ToString("R #, ##0.00")</td>
 						<td> @claim.ClaimStartDate.ToString("yyyy-MM-dd")</td>
 						<td> @claim.ClaimEndDate.ToString("yyyy-MM-dd")</td>
 						<td> @claim.TotalAmount.ToString("R #, ##0.00")</td>
-
-						<td>
-							<a href="@claim.SupportingDocumentUrl" target="_blank">Download</a>
+						<td> 
+							@if (!string.IsNullOrEmpty(claim.SupportingDocumentUrl))
+							{
+								<a href="@claim.SupportingDocumentUrl" target="_blank">Download</a>
+							}
+							else
+							{
+								<span>No Document</span>
+							}
 						</td>
+						<td>@claim.AdditionalNotes</td>
 						<td>
 							<input type="hidden" name="claimID" value="@claim.ClaimID"/>
 							<button class="button-approve">Approve</button>

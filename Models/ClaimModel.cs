@@ -10,9 +10,9 @@ namespace PROG_POE2.Models
 
         public string LecturerFirstName { get; set; }
 
-        public string LectureLastName { get; set; }
+        public string LecturerLastName { get; set; }
 
-        public double HoursWorked { get; set; }
+        public int HoursWorked { get; set; }
 
         public decimal HourlyRate { get; set; }
 

@@ -59,12 +59,19 @@ namespace PROG_POE2.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SubmitClaim(string firstName, string surname, int hoursWorked, decimal hourlyRate, DateTime claimStartDate, DateTime claimEndDate, string notes, IFormFile supportingDocument)
+        public async Task<IActionResult> SubmitClaim(string LecturerFirstName, string LecturerLastName, int HoursWorked, decimal HourlyRate, DateTime ClaimStartDate, DateTime ClaimEndDate, string AdditionalNotes, IFormFile SupportingDocument)
         {
-            if (supportingDocument != null && supportingDocument.Length > 0)
+            if (SupportingDocument != null && SupportingDocument.Length > 0)
             {
-                using var stream = supportingDocument.OpenReadStream();
-                var fileName = Path.GetFileName(supportingDocument.FileName);
+                const long maxFileSize = 5242880;
+                if (SupportingDocument.Length > maxFileSize)
+                {
+                    TempData["ErrorMessage"] = "The file you are trying to submit must be less than 5 MB!";
+                    return RedirectToAction("SubmitClaim");
+                }
+
+                using var stream = SupportingDocument.OpenReadStream();
+                var fileName = Path.GetFileName(SupportingDocument.FileName);
 
                 try
                 {
@@ -73,25 +80,51 @@ namespace PROG_POE2.Controllers
                     ClaimModel newClaim = new ClaimModel
                     {
                         ClaimID = claimList.Count + 1,
-                        LecturerFirstName = firstName,
-                        LectureLastName = surname,
-                        HoursWorked = hoursWorked,
-                        HourlyRate = hourlyRate,
-                        ClaimStartDate = claimStartDate,
-                        ClaimEndDate = claimEndDate,
+                        LecturerFirstName = LecturerFirstName,
+                        LecturerLastName = LecturerLastName,
+                        HoursWorked = HoursWorked,
+                        HourlyRate = HourlyRate,
+                        ClaimStartDate = ClaimStartDate,
+                        ClaimEndDate = ClaimEndDate,
                         SupportingDocumentUrl = blobUrl,
-                        AdditionalNotes = notes,
+                        AdditionalNotes = AdditionalNotes,
                         Status = "Pending",
                     };
 
                     claimList.Add(newClaim);
-                
+
+                    TempData["SuccessMessage"] = "Your claim was submitted successfully!";
+                    return RedirectToAction("SubmitClaim");
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error uploading file, please try again!");
-                    ModelState.AddModelError(string.Empty, "There was an error uploading the file. Please try again.");
+                    TempData["ErrorMessage"] = "Error submitting your claim! Please try again.";
+                    return RedirectToAction("SubmitClaim");
                 }
+            }
+
+            return RedirectToAction("SubmitClaim");
+        }
+
+
+        // processing the claim - method
+        [HttpPost]
+        public IActionResult ApproveRejectClaims(int ClaimId, string action)
+        {
+            var claim = claimList.FirstOrDefault(c => c.ClaimID == ClaimId);
+            if (claim == null)
+            {
+                if (action == "approve")
+                {
+                    claim.Status = "Approved";
+                }
+                else if (action == "reject")
+                {
+                    claim.Status = "Rejected";
+                }
+
+                claimList.Remove(claim);
             }
 
             return RedirectToAction("ApproveClaim");

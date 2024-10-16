@@ -39,6 +39,8 @@ namespace PROG_POE2.Controllers
 			if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
 			{
 				ViewBag.ErrorMessage = "Please fill in all the fields!";
+				ViewBag.Name = name;
+				ViewBag.Email = email;
 				return View("Login");
 			}
 
@@ -96,7 +98,8 @@ namespace PROG_POE2.Controllers
 			{
 				ViewBag.ErrorMessage = "Email or Password entered is incorrect, Please try again!";
 				// User not found, handle accordingly (e.g., show error message)
-
+				ViewBag.Name = name;
+				ViewBag.Email = email;
 				return View("Login");
 			}
 		}

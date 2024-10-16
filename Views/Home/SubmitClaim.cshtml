@@ -9,47 +9,61 @@
 
 <div class="submitClaim-container">
 
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
     <!-- form to submit a claim -->
-    <form>
+    <form asp-action="SubmitClaim" method="post" enctype="multipart/form-data">
 
          <!-- creating input for lectures first name-->
         <div class="form-group">
             <label for="lecturesFirstName">Name</label>
-            <input type="text" class="form-control" id="FirstName" placeholder="Enter First Name"/>
+            <input type="text" class="form-control" id="FirstName" name="LecturerFirstName" placeholder="Enter First Name"/>
         </div>
 
         <!-- creating input for lectures surname-->
         <div class="form-group">
             <label for="lecturesSurname">Surname</label>
-            <input type="text" class="form-control" id="Surname" placeholder="Enter Surname"/>
+            <input type="text" class="form-control" id="Surname" name="LecturerLastName" placeholder="Enter Surname" />
         </div>
 
         <!-- creating input for hours worked-->
         <div class="form-group">
             <label for="HoursWorked">Hours Worked</label>
-            <input type="number" class="form-control" id="HoursWorked" placeholder="Enter Hours Worked"/>
+            <input type="number" class="form-control" id="HoursWorked" name="HoursWorked" placeholder="Enter Hours Worked" />
         </div>
 
         <!-- creating input for hourly rate-->
         <div class="form-group">
             <label for="HourlyRate">Hourly Rate</label>
-            <input type="number" class="form-control" id="HourlyRate" placeholder="Enter your Hourly Rate"/>
+            <input type="number" class="form-control" id="HourlyRate" name="HourlyRate" placeholder="Enter your Hourly Rate" />
         </div>
 
         <!-- creating input for month by allowing the user to enter a date period to claim from-->
         <div class="form-group">
             <label for="ClaimStartDate"> Select a Claim Period - From</label>
-            <input type="date" class="form-control" id="ClaimStartDate" placeholder="yyyy/mm/dd" />
+            <input type="date" class="form-control" id="ClaimStartDate" name="ClaimStartDate" placeholder="yyyy/mm/dd" />
         </div>
 
         <div class="form-group">
             <label for="ClaimEndDate"> Select a Claim Period - To</label>
-            <input type="date" class="form-control" id="ClaimEndDate" placeholder="yyyy/mm/dd" />
+            <input type="date" class="form-control" id="ClaimEndDate" name="ClaimEndDate" placeholder="yyyy/mm/dd" />
         </div>
 
         <div class="form-group">
             <label for="Notes"> Additional Notes</label>
-            <textarea class="form-control" id="Notes" rows="3" placeholder="Enter any additional notes here..."></textarea> 
+            <textarea class="form-control" id="Notes" name="AdditionalNotes" rows="3" placeholder="Enter any additional notes here..."></textarea>
         </div>
 
         <div class="form-group">
@@ -58,9 +72,8 @@
         </div>
 
         <!--creating a button to submit the claim-->
-        <button type="submit" class="submit-btn" disabled>Submit Claim</button>
+        <button type="submit" class="submit-btn">Submit Claim</button>
     </form>
-
 </div>
 
 <style>
