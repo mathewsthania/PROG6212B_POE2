@@ -52,7 +52,8 @@ namespace PROG_POE2.Controllers
 				{
 					new Claim(ClaimTypes.Name, name),
 					new Claim(ClaimTypes.Email, email),
-					new Claim(ClaimTypes.NameIdentifier, lecturerUserID.ToString())
+					new Claim(ClaimTypes.NameIdentifier, lecturerUserID.ToString()),
+					new Claim(ClaimTypes.Role, "Lecturer")
 				};
 
 
@@ -63,8 +64,9 @@ namespace PROG_POE2.Controllers
 				await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
 				HttpContext.Session.SetString("UserName", name);
+                HttpContext.Session.SetString("UserRole", "Lecturer");
 
-				return RedirectToAction("SubmitClaim", "Home", new { UserID = lecturerUserID });
+                return RedirectToAction("SubmitClaim", "Home", new { UserID = lecturerUserID });
 			}
 
 			else if (programmeCoordAcadManagerUserID != -1)
@@ -73,7 +75,9 @@ namespace PROG_POE2.Controllers
 				{
 					new Claim(ClaimTypes.Name, name),
 					new Claim(ClaimTypes.Email, email),
-					new Claim(ClaimTypes.NameIdentifier, programmeCoordAcadManagerUserID.ToString())
+					new Claim(ClaimTypes.NameIdentifier, programmeCoordAcadManagerUserID.ToString()),
+					new Claim(ClaimTypes.Role, "Programme Coordinator/Academic Manager")
+
 				};
 
 				var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -83,8 +87,9 @@ namespace PROG_POE2.Controllers
 				await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
 				HttpContext.Session.SetString("UserName", name);
+                HttpContext.Session.SetString("UserRole", "Programme Coordinator/Academic Manager"); 
 
-				return RedirectToAction("ApproveClaim", "Home", new { UserID = programmeCoordAcadManagerUserID });
+                return RedirectToAction("ApproveClaim", "Home", new { UserID = programmeCoordAcadManagerUserID });
 			}
 
 			else

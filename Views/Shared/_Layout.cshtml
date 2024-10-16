@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -51,7 +53,7 @@
                 <!--adding in logo image to make the website look more professional-->
                 <img src="/css/Contract_Monthly_Claim_SystemLogo.jpg" alt="CONTRACT MONTHLY CLAIM SYSTEM" width="350" height="60" style="margin-left: 10px;" />
 
-                <a class="nav-link text-light nav bar-brand" asp-area="" asp-controller="Home" asp-action="Index"></a>
+                <a class="nav-link nav bar-brand" asp-area="" asp-controller="Home" asp-action="Index"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>  
@@ -62,7 +64,34 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
-                        @if (!User.Identity.IsAuthenticated)
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("UserName") != null)
+                        {
+                            if (HttpContextAccessor.HttpContext.Session.GetString("UserRole") == "Lecturer")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="SubmitClaim">Submit Claim</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Claims1">Claim Status</a>
+                                </li>
+                            }
+                            else if (HttpContextAccessor.HttpContext.Session.GetString("UserRole") == "Programme Coordinator/Academic Manager")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ApproveClaim">Review Claims</a>
+                                </li>
+                            }
+
+                            <li class="nav-item">
+                                <span class="nav-link">@HttpContextAccessor.HttpContext.Session.GetString("UserName")</span> <!-- Display user name -->
+                            </li>
+                            <li class="nav-item">
+                                <form asp-area="" asp-controller="Logout" asp-action="Logout" method="post">
+                                    <button type="submit" class="btn btn-link nav-link">Log Out</button>
+                                </form>
+                            </li>
+                        }
+                        else
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="SignUp">Sign Up</a>
@@ -71,33 +100,6 @@
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Login">Log In</a>
                             </li>
                         }
-                        else
-                        {
-                            @if (User.IsInRole("Lecturer"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="SubmitClaim">Submit Claim </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Claims1">Claim Status</a>
-                                </li>
-                            }
-                        }
-                        else if (User.IsInRole("Programme Coordinator/Academic Manager"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ApproveClaim">Review Claim</a>
-                            </li>
-                        }
-
-                        <!-- adding in logout info-->
-                        <li class="nav-item">
-                            <a class="nav-link"@User.Identity.Name</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Logout">Log Out</a>
-                        </li>
                     </ul>
                 </div>
             </div>

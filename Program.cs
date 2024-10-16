@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using PROG_POE2.Services;
 
 namespace PROG_POE2
 {
@@ -8,16 +9,23 @@ namespace PROG_POE2
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // configuration for Azure Storage
+            var configuration = builder.Configuration;
+            var connectionString = configuration.GetConnectionString("AzureStorage");
+
+            builder.Services.AddSingleton<BlobService>();
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-			builder.Services.AddSession(options =>
-			{
-				options.Cookie.IsEssential = true;
-				options.IdleTimeout = TimeSpan.FromMinutes(30);
-			});
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true; // Make the session cookie essential
+            });
 
-			builder.Services.AddHttpContextAccessor();
+            builder.Services.AddHttpContextAccessor();
 
 			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 			.AddCookie(options =>
