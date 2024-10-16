@@ -4,106 +4,57 @@
 	ViewData["Title"] = "Approve or Reject Claims";
 }
 
+@model IEnumerable<PROG_POE2.Models.ClaimModel>
 
 <!--ADDING IN CANVA DESIGN I CREATED FOR THE HEADINGS-->
 <img src="~/css/ReviewClaims1.png" alt="ReviewClaimImage" style="width: 100%; height: auto;">
 
 <div class="reviewClaims-container">
+	<form asp-action="SubmitClaim" method="post">
 	<!--creating table to display the list of claims-->
-	<table class="claims-table">
-		<thead>
-			<tr>
-				<th>Claim ID</th>
-				<th>Lecturer First Name</th>
-				<th>Lecturer Last Name</th>
-				<th>Hours Worked</th>
-				<th>Hourly Rate</th>
-				<th>Claim Period (From)</th>
-				<th>Claim Period (To)</th>
-				<th>Total Amount</th>
-				<th>Supporting Documents</th>
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tbody>
-			<!--inputting dummy data -->
-			<tr>
-				<td>001</td>
-				<td>Thania</td>
-				<td>Mathews</td>
-				<td>40</td>
-				<td>R250</td>
-				<td>2023-04-01</td>
-				<td>2023-04-31</td>
-				<td>R10 000</td>
-				<td><a href="#">Download</a></td>
-				<td>
-					<button class="button-approve">Approve</button>
-					<button class="button-reject">Reject</button>
-				</td>
-			</tr>
-			<tr>
-				<td>002</td>
-				<td>Chloe</td>
-				<td>Hudson</td>
-				<td>60</td>
-				<td>R200</td>
-				<td>2023-05-01</td>
-				<td>2023-05-30</td>
-				<td>R12 000</td>
-				<td><a href="#">Download</a></td>
-				<td>
-					<button class="button-approve">Approve</button>
-					<button class="button-reject">Reject</button>
-				</td>
-			</tr>
-			<tr>
-				<td>003</td>
-				<td>John</td>
-				<td>King</td>
-				<td>35</td>
-				<td>R250</td>
-				<td>2023-06-01</td>
-				<td>2023-06-30</td>
-				<td>R8750</td>
-				<td><a href="#">Download</a></td>
-				<td>
-					<button class="button-approve">Approve</button>
-					<button class="button-reject">Reject</button>
-				</td>
-			</tr>
-			<tr>
-				<td>004</td>
-				<td>Mark</td>
-				<td>Ford</td>
-				<td>10</td>
-				<td>R300</td>
-				<td>2023-07-01</td>
-				<td>2023-07-31</td>
-				<td>R3000</td>
-				<td><a href="#">Download</a></td>
-				<td>
-					<button class="button-approve">Approve</button>
-					<button class="button-reject">Reject</button>
-				</td>
-			</tr>
-			<tr>
-				<td>005</td>
-				<td>Gina</td>
-				<td>Watts</td>
-				<td>50</td>
-				<td>R250</td>
-				<td>2023-08-01</td>
-				<td>2023-08-31</td>
-				<td>R12 500</td>
-				<td><a href="#">Download</a></td>
-				<td>
-					<button class="button-approve">Approve</button>
-					<button class="button-reject">Reject</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+		<table class="claims-table">
+			<thead>
+				<tr>
+					<th>Claim ID</th>
+					<th>Lecturer First Name</th>
+					<th>Lecturer Last Name</th>
+					<th>Hours Worked</th>
+					<th>Hourly Rate</th>
+					<th>Claim Period (From)</th>
+					<th>Claim Period (To)</th>
+					<th>Total Amount</th>
+					<th>Supporting Documents</th>
+					<th>Additonal Notes</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				@foreach (var claim in Model)
+				{
+					<tr>
+						<td> @claim.ClaimID</td>
+						<td> @claim.LecturerFirstName</td>
+						<td> @claim.LectureLastName</td>
+						<td> @claim.HoursWorked</td>
+						<td> @claim.HourlyRate.ToString("R #, ##0.00")</td>
+						<td> @claim.ClaimStartDate.ToString("yyyy-MM-dd")</td>
+						<td> @claim.ClaimEndDate.ToString("yyyy-MM-dd")</td>
+						<td> @claim.TotalAmount.ToString("R #, ##0.00")</td>
+
+						<td>
+							<a href="@claim.SupportingDocumentUrl" target="_blank">Download</a>
+						</td>
+						<td>
+							<input type="hidden" name="claimID" value="@claim.ClaimID"/>
+							<button class="button-approve">Approve</button>
+							<button class="button-reject">Reject</button>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</form>
 </div>
 
 	<!---adding in design --->

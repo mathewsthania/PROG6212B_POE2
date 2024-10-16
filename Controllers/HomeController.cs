@@ -12,6 +12,7 @@ namespace PROG_POE2.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly BlobService _blobService;  
+        private static List<ClaimModel> claimList = new List<ClaimModel>();
 
         public HomeController(ILogger<HomeController> logger, BlobService blobService)
         {
@@ -27,7 +28,7 @@ namespace PROG_POE2.Controllers
         
         public IActionResult ApproveClaim()
         {
-            return View();
+            return View(claimList);
         }
 
         
@@ -58,7 +59,7 @@ namespace PROG_POE2.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SubmitClaim(string surname, int hoursWorked, decimal hourlyRate, DateTime claimStartDate, DateTime claimEndDate, string notes, IFormFile supportingDocument)
+        public async Task<IActionResult> SubmitClaim(string firstName, string surname, int hoursWorked, decimal hourlyRate, DateTime claimStartDate, DateTime claimEndDate, string notes, IFormFile supportingDocument)
         {
             if (supportingDocument != null && supportingDocument.Length > 0)
             {
@@ -68,6 +69,23 @@ namespace PROG_POE2.Controllers
                 try
                 {
                     string blobUrl = await _blobService.UploadBlobAsync("supporting-documents", fileName, stream);
+
+                    ClaimModel newClaim = new ClaimModel
+                    {
+                        ClaimID = claimList.Count + 1,
+                        LecturerFirstName = firstName,
+                        LectureLastName = surname,
+                        HoursWorked = hoursWorked,
+                        HourlyRate = hourlyRate,
+                        ClaimStartDate = claimStartDate,
+                        ClaimEndDate = claimEndDate,
+                        SupportingDocumentUrl = blobUrl,
+                        AdditionalNotes = notes,
+                        Status = "Pending",
+                    };
+
+                    claimList.Add(newClaim);
+                
                 }
                 catch (Exception ex)
                 {
@@ -76,7 +94,7 @@ namespace PROG_POE2.Controllers
                 }
             }
 
-            return View();
+            return RedirectToAction("ApproveClaim");
         }
         
 
