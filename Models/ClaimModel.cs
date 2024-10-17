@@ -23,7 +23,8 @@ namespace PROG_POE2.Models
 
         public decimal TotalAmount {  get; set; }
 
-        public string? SupportingDocumentUrl { get; set; }
+        public byte[]? SupportingDocument { get; set; }
+        public string? SupportingDocumentExtension { get; set; }
 
         public string? AdditionalNotes { get; set; }
 

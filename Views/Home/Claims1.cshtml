@@ -18,13 +18,14 @@
                 <th>Lecturer Last Name</th>
                 <th>Claim Period (From)</th>
                 <th>Claim Period (To)</th>
+                <th>Date Submitted</th>
                 <th>Status</th>
             </tr>
         </thead>
         <tbody>
             @if (Model != null && Model.Any())
             {
-                foreach (var claim in Model)
+                @foreach (var claim in Model)
                 {
                     <tr>
                         <td>@claim.ClaimID</td>
@@ -32,6 +33,7 @@
                         <td>@claim.LecturerLastName</td>
                         <td>@claim.ClaimStartDate.ToString("yyyy-MM-dd")</td>
                         <td>@claim.ClaimEndDate.ToString("yyyy-MM-dd")</td>
+                        <td>@claim.DateSubmitted.ToString("yyyy-MM-dd")</td>
                         <td class="@("status-" + claim.Status.ToLower())">@claim.Status</td>
                     </tr>
                 }
@@ -39,7 +41,7 @@
             else
             {
                 <tr>
-                    <td colspan="6" style="font family: 'Century Gothic', sans-serifstyle; text-align:center;">No claims were found.</td>
+                    <td colspan="7" style="font family: 'Century Gothic', sans-serifstyle; text-align:center;">No claims were found.</td>
                 </tr>
             }
         </tbody>

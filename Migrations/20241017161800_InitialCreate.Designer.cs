@@ -12,8 +12,8 @@ using PROG_POE2.Data;
 namespace PROG_POE2.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241017123928_UpdateClaimModel")]
-    partial class UpdateClaimModel
+    [Migration("20241017161800_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,6 @@ namespace PROG_POE2.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClaimID"));
 
                     b.Property<string>("AdditionalNotes")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ClaimEndDate")
@@ -64,12 +63,16 @@ namespace PROG_POE2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SupportingDocumentUrl")
-                        .IsRequired()
+                    b.Property<byte[]>("SupportingDocument")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("SupportingDocumentExtension")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("decimal(18,2)")
+                        .HasComputedColumnSql("[HoursWorked] * [HourlyRate]", true);
 
                     b.HasKey("ClaimID");
 

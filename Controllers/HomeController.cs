@@ -11,162 +11,208 @@ using PROG_POE2.Models;
 
 namespace PROG_POE2.Controllers
 {
-    public class HomeController : Controller
-    {
-        private readonly ILogger<HomeController> _logger; 
-        private readonly AppDbContext _context;
+	public class HomeController : Controller
+	{
+		private readonly ILogger<HomeController> _logger;
+		private readonly AppDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, AppDbContext context)
-        {
-            _logger = logger;
-            _context = context;
-        }
+		public HomeController(ILogger<HomeController> logger, AppDbContext context)
+		{
+			_logger = logger;
+			_context = context;
+		}
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        
-        public IActionResult ApproveClaim()
-        {
-			var pendingClaims = _context.Claims.Where(c => c.Status == "Pending").ToList(); 
-			return View(pendingClaims); 
-        }
-
-        
-        public IActionResult SubmitClaim()
+		public IActionResult Index()
 		{
 			return View();
 		}
 
-       
-        public IActionResult Claims1()
-        {
-            return View();
-        }
 
-        public IActionResult SignUp()
-        {
-            return View();
-        }
-
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        public IActionResult Logout()
-        {
-            return View("Index");
+		public IActionResult ApproveClaim()
+		{
+			var pendingClaims = _context.Claims.Where(c => c.Status == "Pending").ToList();
+			return View(pendingClaims);
 		}
-        
-        [HttpPost]
-        public async Task<IActionResult> SubmitClaim(string LecturerFirstName, string LecturerLastName, int HoursWorked, decimal HourlyRate, DateTime ClaimStartDate, DateTime ClaimEndDate, string AdditionalNotes, IFormFile SupportingDocument)
-        {
-            // defining the maximum file size
-            const long maxFileSize = 5 * 1024 * 1024;
-
-            // checking the file that the lecturer uploads
-            if (SupportingDocument == null && SupportingDocument.Length == 0)
-            {
-                TempData["ErrorMessage"] = "Please upload a supporting document!";
-                return RedirectToAction("SubmitClaim");
-             }
 
 
-            // checking the file size of the supporting document
-			if (SupportingDocument.Length > maxFileSize)
-            {
+		public IActionResult SubmitClaim()
+		{
+			return View();
+		}
+
+
+		public IActionResult Claims1()
+		{
+			var userName = User.Identity.Name;
+
+			var claims = _context.Claims
+				.Where(c => c.LecturerFirstName == userName)
+				.ToList();
+
+			return View(claims);
+		}
+
+		public IActionResult SignUp()
+		{
+			return View();
+		}
+
+		public IActionResult Login()
+		{
+			return View();
+		}
+
+		public IActionResult Logout()
+		{
+			return View("Index");
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> SubmitClaim(string LecturerFirstName, string LecturerLastName, int HoursWorked, decimal HourlyRate, DateTime ClaimStartDate, DateTime ClaimEndDate, string? AdditionalNotes, IFormFile? SupportingDocument)
+		{
+			// defining the maximum file size
+			const long maxFileSize = 5 * 1024 * 1024;
+
+			// checking the file that the lecturer uploads
+			if (SupportingDocument != null && SupportingDocument.Length > 0)
+			{
+				TempData["ErrorMessage"] = "Please upload a supporting document!";
+				return RedirectToAction("SubmitClaim");
+			}
+
+
+			// checking the file size of the supporting document
+			if (SupportingDocument != null && SupportingDocument.Length > maxFileSize)
+			{
 				TempData["ErrorMessage"] = "The file must be less than 5 MB!";
 				return RedirectToAction("SubmitClaim");
 			}
 
-            // checking for the file type 
-            var allowedFileTypes = new[] { ".pdf", ".docx", ".xlsx" };
-            var fileExtension = Path.GetExtension(SupportingDocument.FileName).ToLower();
-            
-            if (!allowedFileTypes.Contains(fileExtension))
-            {
+			// checking for the file type 
+			var allowedFileTypes = new[] { ".pdf", ".docx", ".xlsx" };
+			var fileExtension = Path.GetExtension(SupportingDocument.FileName).ToLower();
+
+			if (!allowedFileTypes.Contains(fileExtension))
+			{
 				TempData["ErrorMessage"] = "The file you are trying to upload is not allowed, only .pdf, .docx, and .xlsx file types are allowed.";
 				return RedirectToAction("SubmitClaim");
 			}
 
-            using var stream = SupportingDocument.OpenReadStream();
-            var fileName = Path.GetFileName(SupportingDocument.FileName);
-				
-                try
-                {
-                    ClaimModel newClaim = new ClaimModel
-                    {
-                        LecturerFirstName = LecturerFirstName,
-                        LecturerLastName = LecturerLastName,
-                        HoursWorked = HoursWorked,
-                        HourlyRate = HourlyRate,
-                        ClaimStartDate = ClaimStartDate,
-                        ClaimEndDate = ClaimEndDate,
-                        SupportingDocumentUrl = "",
-                        AdditionalNotes = AdditionalNotes,
-                        Status = "Pending",
-                        TotalAmount = HoursWorked * HourlyRate
-					};
+			using var stream = new MemoryStream();
+			await SupportingDocument.CopyToAsync(stream);
+			var fileBytes = stream.ToArray();
 
-                    // saving the claim to the database
-                    _context.Claims.Add(newClaim);
-                    await _context.SaveChangesAsync();
+			try
+			{
+				ClaimModel newClaim = new ClaimModel
+				{
+					LecturerFirstName = LecturerFirstName,
+					LecturerLastName = LecturerLastName,
+					HoursWorked = HoursWorked,
+					HourlyRate = HourlyRate,
+					ClaimStartDate = ClaimStartDate,
+					ClaimEndDate = ClaimEndDate,
+					SupportingDocument = fileBytes,
+					SupportingDocumentExtension = fileExtension,
+					AdditionalNotes = AdditionalNotes,
+					Status = "Pending",
+					TotalAmount = HoursWorked * HourlyRate
+				};
 
-                    TempData["SuccessMessage"] = "Your claim was submitted successfully!";
-                    return RedirectToAction("SubmitClaim");
-                }
+				// saving the claim to the database
+				_context.Claims.Add(newClaim);
+				await _context.SaveChangesAsync();
 
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Error uploading file, please try again!");
-                    TempData["ErrorMessage"] = "Error submitting your claim! Please try again.";
-                    return RedirectToAction("SubmitClaim");
-                }
-            }
-        
+				TempData["SuccessMessage"] = "Your claim was submitted successfully!";
+				return RedirectToAction("SubmitClaim");
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Error submmiting your claim: {Message}", ex.Message);
 
-        // processing the claim - method
-        [HttpPost]
-        public async Task<IActionResult> ApproveRejectClaims(int ClaimId, string action)
-        {
-            var claim = await _context.Claims.FindAsync(ClaimId);
-            if (claim != null)
-            {
-                if (action == "approve")
-                {
-                    claim.Status = "Approved";
-                }
-                else if (action == "reject")
-                {
-                    claim.Status = "Rejected";
-                }
+				TempData["ErrorMessage"] = "Error submitting your claim! Please try again.";
+				return RedirectToAction("SubmitClaim");
+			}
+		}
 
-                _context.Claims.Update(claim);
-                await _context.SaveChangesAsync();
-            }
 
-            return RedirectToAction("ApproveClaim");
-        }
+		// processing the claim - method
+		[HttpPost]
+		public async Task<IActionResult> ApproveRejectClaims(int ClaimId, string action)
+		{
+			var claim = await _context.Claims.FindAsync(ClaimId);
+			if (claim != null)
+			{
+				if (action == "approve")
+				{
+					claim.Status = "Approved";
+				}
+				else if (action == "reject")
+				{
+					claim.Status = "Rejected";
+				}
 
-        // method for the status of the claim
-        public IActionResult LecturerClaimStatus(string lecturerFirstName, string lecturerLastName)
-        {
-            var lecturerClaims = _context.Claims
-                .Where(c => c.LecturerFirstName == lecturerFirstName && c.LecturerLastName == lecturerLastName).ToList();
-            return View(lecturerClaims);
-        }
-        
+				_context.Claims.Update(claim);
+				await _context.SaveChangesAsync();
+			}
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-    }
+			return RedirectToAction("ApproveClaim");
+		}
+
+		// method for the status of the claim
+		[HttpGet]
+		public IActionResult LecturerClaimStatus()
+		{
+			string lecturerFirstName = HttpContext.Session.GetString("LecturerFirstName");
+			string lecturerLastName = HttpContext.Session.GetString("LecturerLastName");
+
+			// Check if session variables are set
+			if (string.IsNullOrEmpty(lecturerFirstName) || string.IsNullOrEmpty(lecturerLastName))
+			{
+				TempData["ErrorMessage"] = "User session data not found.";
+				return RedirectToAction("Index", "Home"); // Redirect if not found
+			}
+
+			// Retrieving claims for the logged-in lecturer
+			var lecturerClaims = _context.Claims
+				.Where(c => c.LecturerFirstName == lecturerFirstName && c.LecturerLastName == lecturerLastName)
+				.OrderByDescending(c => c.DateSubmitted)
+				.ToList();
+
+			return View(lecturerClaims);
+		}
+
+		[HttpGet]
+		public IActionResult DownloadDocument(int id)
+		{
+			var claim = _context.Claims.FirstOrDefault(c => c.ClaimID == id);
+
+			if (claim == null || claim.SupportingDocument == null)
+			{
+				TempData["ErrorMessage"] = "No document available.";
+				return RedirectToAction("ApproveClaim");
+			}
+
+			// Set the content type
+			string contentType = claim.SupportingDocumentExtension switch
+			{
+				".pdf" => "application/pdf",
+				".docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+				".xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+				_ => "application/octet-stream" // default if unknown extension
+			};
+
+			return File(claim.SupportingDocument, contentType, $"Document_{claim.ClaimID}{claim.SupportingDocumentExtension}");
+		}
+
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+
+		public IActionResult Error()
+		{
+			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+	}
 }
+
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*END*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//

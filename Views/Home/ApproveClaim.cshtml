@@ -42,9 +42,9 @@
 						<td> @claim.ClaimEndDate.ToString("yyyy-MM-dd")</td>
 						<td> @claim.TotalAmount.ToString("R #, ##0.00")</td>
 						<td> 
-							@if (!string.IsNullOrEmpty(claim.SupportingDocumentUrl))
+							@if (claim.SupportingDocument != null && claim.SupportingDocument.Length > 0)
 							{
-								<a href="@claim.SupportingDocumentUrl" target="_blank">Download</a>
+								<a href="@Url.Action("DownloadDocument", "Home", new { id = claim.ClaimID} )" target="_blank">Download</a>
 							}
 							else
 							{

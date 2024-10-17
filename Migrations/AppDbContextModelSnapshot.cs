@@ -60,11 +60,16 @@ namespace PROG_POE2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SupportingDocumentUrl")
+                    b.Property<byte[]>("SupportingDocument")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("SupportingDocumentExtension")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("decimal(18,2)")
+                        .HasComputedColumnSql("[HoursWorked] * [HourlyRate]", true);
 
                     b.HasKey("ClaimID");
 

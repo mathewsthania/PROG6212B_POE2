@@ -44,9 +44,12 @@ namespace PROG_POE2.Controllers
 				return View("Login");
 			}
 
+			// checking for lecturer
 			int lecturerUserID = login.SelectLecturer(name, email, password);
 
+			// checking for the programme coordinator/ admin
 			int programmeCoordAcadManagerUserID = login.SelectProgrammeCoordinatorAcademicManager(name, email, password);
+
 
 			if (lecturerUserID != -1)
 			{
@@ -66,9 +69,9 @@ namespace PROG_POE2.Controllers
 				await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
 				HttpContext.Session.SetString("UserName", name);
-                HttpContext.Session.SetString("UserRole", "Lecturer");
+				HttpContext.Session.SetString("UserRole", "Lecturer");
 
-                return RedirectToAction("SubmitClaim", "Home", new { UserID = lecturerUserID });
+				return RedirectToAction("SubmitClaim", "Home", new { UserID = lecturerUserID });
 			}
 
 			else if (programmeCoordAcadManagerUserID != -1)
@@ -89,9 +92,9 @@ namespace PROG_POE2.Controllers
 				await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
 				HttpContext.Session.SetString("UserName", name);
-                HttpContext.Session.SetString("UserRole", "Programme Coordinator/Academic Manager"); 
+				HttpContext.Session.SetString("UserRole", "Programme Coordinator/Academic Manager");
 
-                return RedirectToAction("ApproveClaim", "Home", new { UserID = programmeCoordAcadManagerUserID });
+				return RedirectToAction("ApproveClaim", "Home", new { UserID = programmeCoordAcadManagerUserID });
 			}
 
 			else

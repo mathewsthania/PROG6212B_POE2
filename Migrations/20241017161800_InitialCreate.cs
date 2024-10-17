@@ -23,7 +23,9 @@ namespace PROG_POE2.Migrations
                     HourlyRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ClaimStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ClaimEndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SupportingDocumentUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false, computedColumnSql: "[HoursWorked] * [HourlyRate]", stored: true),
+                    SupportingDocument = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    SupportingDocumentExtension = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AdditionalNotes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateSubmitted = table.Column<DateTime>(type: "datetime2", nullable: false)
