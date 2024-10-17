@@ -22,15 +22,24 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var claim in Model)
+            @if (Model != null && Model.Any())
+            {
+                foreach (var claim in Model)
+                {
+                    <tr>
+                        <td>@claim.ClaimID</td>
+                        <td>@claim.LecturerFirstName</td>
+                        <td>@claim.LecturerLastName</td>
+                        <td>@claim.ClaimStartDate.ToString("yyyy-MM-dd")</td>
+                        <td>@claim.ClaimEndDate.ToString("yyyy-MM-dd")</td>
+                        <td class="@("status-" + claim.Status.ToLower())">@claim.Status</td>
+                    </tr>
+                }
+            }
+            else
             {
                 <tr>
-                    <td>@claim.ClaimID</td>
-                    <td>@claim.LecturerFirstName</td>
-                    <td>@claim.LecturerLastName</td>
-                    <td> @claim.ClaimStartDate.ToString("yyyy-MM-dd")</td>
-                    <td> @claim.ClaimEndDate.ToString("yyyy-MM-dd")</td>
-                    <td class="@("status-" + claim.Status.ToLower())">@claim.Status</td>
+                    <td colspan="6" style="font family: 'Century Gothic', sans-serifstyle; text-align:center;">No claims were found.</td>
                 </tr>
             }
         </tbody>
