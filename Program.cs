@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using PROG_POE2.Services;
+using Microsoft.EntityFrameworkCore;
+using PROG_POE2.Data;
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*START*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*START*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 
 namespace PROG_POE2
 {
@@ -9,15 +12,15 @@ namespace PROG_POE2
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // configuration for Azure Storage
-            var configuration = builder.Configuration;
-            var connectionString = configuration.GetConnectionString("AzureStorage");
-
-            builder.Services.AddSingleton<BlobService>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            // Adding the DbContext service and configure it to use the SQL Server
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            
+            // configure session
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -63,3 +66,5 @@ namespace PROG_POE2
         }
     }
 }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*END*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//

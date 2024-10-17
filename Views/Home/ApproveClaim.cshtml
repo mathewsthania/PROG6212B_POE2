@@ -53,9 +53,11 @@
 						</td>
 						<td>@claim.AdditionalNotes</td>
 						<td>
-							<input type="hidden" name="claimID" value="@claim.ClaimID"/>
-							<button class="button-approve">Approve</button>
-							<button class="button-reject">Reject</button>
+							<form asp-action="ApproveRejectClaims" method="post">
+								<input type="hidden" name="ClaimID" value="@claim.ClaimID"/>
+								<button type="submit" name="action" value="approve" class="button-approve">Approve</button>
+								<button type="submit" name="action" value="reject" class="button-reject">Reject</button>
+							</form>
 						</td>
 					</tr>
 				}

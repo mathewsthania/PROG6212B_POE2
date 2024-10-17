@@ -4,6 +4,8 @@
     ViewData["Title"] = "Claim Status";
 }
 
+@model IEnumerable<PROG_POE2.Models.ClaimModel>
+
 <!--ADDING IN CANVA DESIGN I CREATED FOR THE HEADINGS-->
 <img src="~/css/ClaimStatus.png" alt="ClaimStatusImage" style="width: 100%; height: auto;">
 
@@ -12,31 +14,25 @@
         <thead>
             <tr>
                 <th>Claim ID</th>
-                <th>Lecture First Name</th>
-                <th>Lecture Last Name</th>
+                <th>Lecturer First Name</th>
+                <th>Lecturer Last Name</th>
+                <th>Claim Period (From)</th>
+                <th>Claim Period (To)</th>
                 <th>Status</th>
             </tr>
         </thead>
         <tbody>
-            <!--inputting dummy data-->
-            <tr>
-                <td>001</td>
-                <td>Thania</td>
-                <td>Mathews</td>
-                <td class ="status-pending">Pending</td> <!--adding in classes so that i can colour code the status-->
-            </tr>
-            <tr>
-                <td>008</td>
-                <td>Thania</td>
-                <td>Mathews</td>
-                <td class="status-rejected">Rejected</td>
-            </tr>
-            <tr>
-                <td>009</td>
-                <td>Thania</td>
-                <td>Mathews</td>
-                <td class="status-approved">Approved</td>
-            </tr>
+            @foreach (var claim in Model)
+            {
+                <tr>
+                    <td>@claim.ClaimID</td>
+                    <td>@claim.LecturerFirstName</td>
+                    <td>@claim.LecturerLastName</td>
+                    <td> @claim.ClaimStartDate.ToString("yyyy-MM-dd")</td>
+                    <td> @claim.ClaimEndDate.ToString("yyyy-MM-dd")</td>
+                    <td class="@("status-" + claim.Status.ToLower())">@claim.Status</td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>

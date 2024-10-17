@@ -1,8 +1,11 @@
 using System.Diagnostics;
+using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
+using PROG_POE2.Data;
 using PROG_POE2.Models;
-using PROG_POE2.Services;
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*START*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
 
@@ -10,14 +13,13 @@ namespace PROG_POE2.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly BlobService _blobService;  
-        private static List<ClaimModel> claimList = new List<ClaimModel>();
+        private readonly ILogger<HomeController> _logger; 
+        private readonly AppDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, BlobService blobService)
+        public HomeController(ILogger<HomeController> logger, AppDbContext context)
         {
             _logger = logger;
-            _blobService = blobService;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -28,7 +30,8 @@ namespace PROG_POE2.Controllers
         
         public IActionResult ApproveClaim()
         {
-            return View(claimList);
+			var pendingClaims = _context.Claims.Where(c => c.Status == "Pending").ToList(); 
+			return View(pendingClaims); 
         }
 
         
@@ -56,46 +59,65 @@ namespace PROG_POE2.Controllers
         public IActionResult Logout()
         {
             return View("Index");
-        }
-
+		}
+        
         [HttpPost]
         public async Task<IActionResult> SubmitClaim(string LecturerFirstName, string LecturerLastName, int HoursWorked, decimal HourlyRate, DateTime ClaimStartDate, DateTime ClaimEndDate, string AdditionalNotes, IFormFile SupportingDocument)
         {
-            if (SupportingDocument != null && SupportingDocument.Length > 0)
+            // defining the maximum file size
+            const long maxFileSize = 5 * 1024 * 1024;
+
+            // checking the file that the lecturer uploads
+            if (SupportingDocument == null && SupportingDocument.Length == 0)
             {
-                const long maxFileSize = 5242880;
-                if (SupportingDocument.Length > maxFileSize)
-                {
-                    TempData["ErrorMessage"] = "The file you are trying to submit must be less than 5 MB!";
-                    return RedirectToAction("SubmitClaim");
-                }
+                TempData["ErrorMessage"] = "Please upload a supporting document!";
+                return RedirectToAction("SubmitClaim");
+             }
 
-                using var stream = SupportingDocument.OpenReadStream();
-                var fileName = Path.GetFileName(SupportingDocument.FileName);
 
+            // checking the file size of the supporting document
+			if (SupportingDocument.Length > maxFileSize)
+            {
+				TempData["ErrorMessage"] = "The file must be less than 5 MB!";
+				return RedirectToAction("SubmitClaim");
+			}
+
+            // checking for the file type 
+            var allowedFileTypes = new[] { ".pdf", ".docx", ".xlsx" };
+            var fileExtension = Path.GetExtension(SupportingDocument.FileName).ToLower();
+            
+            if (!allowedFileTypes.Contains(fileExtension))
+            {
+				TempData["ErrorMessage"] = "The file you are trying to upload is not allowed, only .pdf, .docx, and .xlsx file types are allowed.";
+				return RedirectToAction("SubmitClaim");
+			}
+
+            using var stream = SupportingDocument.OpenReadStream();
+            var fileName = Path.GetFileName(SupportingDocument.FileName);
+				
                 try
                 {
-                    string blobUrl = await _blobService.UploadBlobAsync("supporting-documents", fileName, stream);
-
                     ClaimModel newClaim = new ClaimModel
                     {
-                        ClaimID = claimList.Count + 1,
                         LecturerFirstName = LecturerFirstName,
                         LecturerLastName = LecturerLastName,
                         HoursWorked = HoursWorked,
                         HourlyRate = HourlyRate,
                         ClaimStartDate = ClaimStartDate,
                         ClaimEndDate = ClaimEndDate,
-                        SupportingDocumentUrl = blobUrl,
+                        SupportingDocumentUrl = "",
                         AdditionalNotes = AdditionalNotes,
                         Status = "Pending",
                     };
 
-                    claimList.Add(newClaim);
+                    // saving the claim to the database
+                    _context.Claims.Add(newClaim);
+                    await _context.SaveChangesAsync();
 
                     TempData["SuccessMessage"] = "Your claim was submitted successfully!";
                     return RedirectToAction("SubmitClaim");
                 }
+
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error uploading file, please try again!");
@@ -103,17 +125,14 @@ namespace PROG_POE2.Controllers
                     return RedirectToAction("SubmitClaim");
                 }
             }
-
-            return RedirectToAction("SubmitClaim");
-        }
-
+        
 
         // processing the claim - method
         [HttpPost]
-        public IActionResult ApproveRejectClaims(int ClaimId, string action)
+        public async Task<IActionResult> ApproveRejectClaims(int ClaimId, string action)
         {
-            var claim = claimList.FirstOrDefault(c => c.ClaimID == ClaimId);
-            if (claim == null)
+            var claim = await _context.Claims.FindAsync(ClaimId);
+            if (claim != null)
             {
                 if (action == "approve")
                 {
@@ -124,10 +143,19 @@ namespace PROG_POE2.Controllers
                     claim.Status = "Rejected";
                 }
 
-                claimList.Remove(claim);
+                _context.Claims.Update(claim);
+                await _context.SaveChangesAsync();
             }
 
             return RedirectToAction("ApproveClaim");
+        }
+
+        // method for the status of the claim
+        public IActionResult LecturerClaimStatus(string lecturerFirstName, string lecturerLastName)
+        {
+            var lecturerClaims = _context.Claims
+                .Where(c => c.LecturerFirstName == lecturerFirstName && c.LecturerLastName == lecturerLastName).ToList();
+            return View(lecturerClaims);
         }
         
 

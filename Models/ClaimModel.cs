@@ -28,7 +28,8 @@ namespace PROG_POE2.Models
 
         public string Status { get; set; }
 
-    }
+		public DateTime DateSubmitted { get; set; } = DateTime.Now; // adding in date for when the user submits the claim
+	}
 }
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*THE*END*OF*FILE*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<//
