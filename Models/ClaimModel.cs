@@ -6,6 +6,7 @@ namespace PROG_POE2.Models
 {
     public class ClaimModel
     {
+        [Key]
         public int ClaimID { get; set; }
 
         public string LecturerFirstName { get; set; }
@@ -20,11 +21,11 @@ namespace PROG_POE2.Models
 
         public DateTime ClaimEndDate { get; set; }
 
-        public decimal TotalAmount => (decimal)HoursWorked * HourlyRate;
+        public decimal TotalAmount {  get; set; }
 
-        public string SupportingDocumentUrl { get; set; }
+        public string? SupportingDocumentUrl { get; set; }
 
-        public string AdditionalNotes { get; set; }
+        public string? AdditionalNotes { get; set; }
 
         public string Status { get; set; }
 

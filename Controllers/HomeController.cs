@@ -108,7 +108,8 @@ namespace PROG_POE2.Controllers
                         SupportingDocumentUrl = "",
                         AdditionalNotes = AdditionalNotes,
                         Status = "Pending",
-                    };
+                        TotalAmount = HoursWorked * HourlyRate
+					};
 
                     // saving the claim to the database
                     _context.Claims.Add(newClaim);
