@@ -70,6 +70,25 @@ namespace PROG_POE2.Controllers
 		[HttpPost]
 		public async Task<IActionResult> SubmitClaim(string LecturerFirstName, string LecturerLastName, int HoursWorked, decimal HourlyRate, DateTime ClaimStartDate, DateTime ClaimEndDate, string? AdditionalNotes, IFormFile? SupportingDocument)
 		{
+			// adding in exception handling
+			if (string.IsNullOrWhiteSpace(LecturerFirstName) || string.IsNullOrWhiteSpace(LecturerLastName))
+			{
+				TempData["ErrorMessage"] = "Please fill in your first name and last name!";
+				return RedirectToAction("SubmitClaim");
+			}
+
+			if (HoursWorked <= 0 || HourlyRate <= 0)
+			{
+				TempData["ErrorMessage"] = "Hours worked/ Hourly Rate must be greater than zero!";
+				return RedirectToAction("SubmitClaim");
+			}
+
+			if (ClaimEndDate < ClaimStartDate)
+			{
+				TempData["ErrorMessage"] = "Claim end date cannot be before the claim start date, please try again!";
+				return RedirectToAction("SubmitClaim");
+			}
+
 			// defining the maximum file size
 			const long maxFileSize = 5 * 1024 * 1024;
 
