@@ -41,7 +41,7 @@ namespace PROG_POE2.Controllers
 				ViewBag.ErrorMessage = "Please fill in all the fields!";
 				ViewBag.Name = name;
 				ViewBag.Email = email;
-				return View("Login");
+				return View("~/Views/Home/Login.cshtml");
 			}
 
 			// checking for lecturer
@@ -99,11 +99,11 @@ namespace PROG_POE2.Controllers
 
 			else
 			{
-				ViewBag.ErrorMessage = "Email or Password entered is incorrect, Please try again!";
+				ViewBag.ErrorMessage = "Name or Email or Password entered is incorrect, Please try again!";
 				// User not found, handle accordingly (e.g., show error message)
 				ViewBag.Name = name;
 				ViewBag.Email = email;
-				return View("Login");
+				return View("~/Views/Home/Login.cshtml");
 			}
 		}
 
@@ -111,7 +111,7 @@ namespace PROG_POE2.Controllers
 		public IActionResult Login()
 		{
 			// Returns the login view page
-			return View("Login");
+			return View("~/Views/Home/Login.cshtml");
 		}
 
 	}

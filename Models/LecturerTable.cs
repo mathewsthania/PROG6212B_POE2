@@ -8,7 +8,7 @@ namespace PROG_POE2.Models
 	public class LecturerTable
 	{
 		// Connection string for connecting to the SQL database
-		public static string con_string = "Server=tcp:sql-databaset-utorial.database.windows.net,1433;Initial Catalog=MyCloudDatabase;Persist Security Info=False;User ID=thaniamathews;Password=SummerMe26;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
+		public static string con_string = "Server=tcp:st10381071.database.windows.net,1433;Initial Catalog=ProgDatabase;Persist Security Info=False;User ID=mathewsthania;Password=SummerMe26;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
 
 		// SQLConnection objct. for managing the database connection
 		public static SqlConnection con = new SqlConnection(con_string);

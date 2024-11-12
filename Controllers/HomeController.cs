@@ -59,7 +59,7 @@ namespace PROG_POE2.Controllers
 
 		public IActionResult Login()
 		{
-			return View();
+			return View("Login");
 		}
 
 		public IActionResult Logout()
@@ -93,7 +93,7 @@ namespace PROG_POE2.Controllers
 			const long maxFileSize = 5 * 1024 * 1024;
 
 			// checking the file that the lecturer uploads
-			if (SupportingDocument != null && SupportingDocument.Length > 0)
+			if (SupportingDocument == null && SupportingDocument.Length == 0)
 			{
 				TempData["ErrorMessage"] = "Please upload a supporting document!";
 				return RedirectToAction("SubmitClaim");
@@ -101,7 +101,7 @@ namespace PROG_POE2.Controllers
 
 
 			// checking the file size of the supporting document
-			if (SupportingDocument != null && SupportingDocument.Length > maxFileSize)
+			if (SupportingDocument.Length > maxFileSize)
 			{
 				TempData["ErrorMessage"] = "The file must be less than 5 MB!";
 				return RedirectToAction("SubmitClaim");
